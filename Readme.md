@@ -4,6 +4,12 @@ FPMC
 Python/Cython implementation of the: "Factorizing Personalized Markov Chains
 for Next-Basket Recommendation" paper.
 
+Notes
+-----
+
+Only works for baskets of size=1. Shoulde be easy to change to other sizes. Our
+datasets only have these sized baskets.
+
 Dependencies for library
 ------------------------
    * Cython
@@ -45,10 +51,25 @@ the model under the filename model.h5
 The model is a pandas HDFStore. Just read-it with:
 
 ::
+
 >> import pandas as pd
+
 >> pd.HDFStore('model.h5')
 
 The keys of this store have the output matrices described in the paper.
+
+Input Format
+------------
+
+The input file should have this format:
+
+dt <tab> user <item> from <item> to
+
+That is, a tab separated file where the first column is the amount of time the user 
+spent on `from` before going to `to`. The second column is the user id, the third 
+is the `from` object, whereas the fourth is the destination `to` object. I used 
+this input on other repositores, thus the main  reason I kept it here. 
+This code will ignore the first column, so you can just use any float.
 
 References
 ----------
