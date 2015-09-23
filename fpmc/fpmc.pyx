@@ -1,5 +1,5 @@
 #-*- coding: utf8
-# cython: boundscheck = False
+# cython: boundscheck = True
 # cython: cdivision = True
 # cython: initializedcheck = False
 # cython: nonecheck = False
@@ -105,7 +105,7 @@ def compute_cost(int[:, ::1] Trace, double[:, ::1] VUI_uk, \
     cdef double z, sigma_z, cost, curr_cost
     cdef dict precomputed = {}
     
-    cdef int[::1] idx_trace = np.arange(VIU_ok.shape[0], dtype='i4')
+    cdef int[::1] idx_trace = np.arange(Trace.shape[0], dtype='i4')
     if num_examples > 0:
         np.random.shuffle(idx_trace)
         idx_trace = idx_trace[:num_examples]
@@ -148,9 +148,9 @@ def sgd(int[:, ::1] Trace, double[:, ::1] VUI_uk, double[:, ::1] VIU_ok, \
     while i < 1000:
         do_iter(Trace, VUI_uk, VIU_ok, VLI_ok, VIL_ok, rate, regularization)
         i += 1
-
+    
     cost_train = compute_cost(Trace, VUI_uk, VIU_ok, VLI_ok, VIL_ok, \
             rate, regularization, 10000, 10000)
-    cost_val = compute_cost(Trace, VUI_uk, VIU_ok, VLI_ok, VIL_ok, \
+    cost_val = compute_cost(Trace_val, VUI_uk, VIU_ok, VLI_ok, VIL_ok, \
             rate, regularization, 10000, 10000)
     return cost_train, cost_val
