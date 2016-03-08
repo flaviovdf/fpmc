@@ -6,6 +6,7 @@ from __future__ import division, print_function
 import glob
 import numpy
 import os
+import platform
 import sys
 
 from distutils.core import setup
@@ -16,8 +17,9 @@ SOURCE = '.'
 os.chdir(SOURCE)
 
 #Uncomment on mac envs for openmp
-os.environ["CC"] = "gcc-5"
-os.environ["CXX"] = "gcc-5"
+if platform.system() == 'Darwin':
+    os.environ["CC"] = 'gcc-5'
+    os.environ["CXX"] = 'gcc-5'
 
 if sys.version_info[:2] < (2, 7):
     print('Requires Python version 2.7 or later (%d.%d detected).' %
